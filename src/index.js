@@ -366,7 +366,7 @@ rl
       case 'inventory': {
         const items = Game.player.inventory;
 
-        console.log('Inventory:\n');
+        console.log(`Inventory (${Game.player.inventory.length}):\n`);
 
         if (items.length === 0) {
           console.log('You have no items');
@@ -386,8 +386,8 @@ rl
         console.log();
         console.log('You see:\n');
         room.objects
-          .filter(object => object.roomDescription != null)
-          .map(object => console.log(' - ', object.roomDescription));
+          .filter(object => object.room_description != null)
+          .map(object => console.log(' - ', object.room_description));
         console.log();
 
         break;

@@ -23,7 +23,7 @@
         {
           "id": "eastern_exit",
           "name": "Eastern Door",
-          "roomDescription":
+          "room_description":
             "An exit to the East. You can hear a faint buzzing.",
           "objects": [],
           "commands": {
@@ -37,7 +37,7 @@
         {
           "id": "northern_exit",
           "name": "Northern Door",
-          "roomDescription":
+          "room_description":
             "An exit to the North. A demonic figure is embossed on the metal.",
           "objects": [],
           "commands": {
@@ -58,7 +58,7 @@
         {
           "id": "shiny_object",
           "name": "Shiny Object",
-          "roomDescription": "A shiny object glittering on the floor.",
+          "room_description": "A shiny object glittering on the floor.",
           "objects": [],
           "commands": {
             "examine": [
@@ -73,7 +73,7 @@
                       "id": "fuse",
                       "name": "Fuse",
                       "inventoryDescription": "A Fuse. It looks usable.",
-                      "roomDescription":
+                      "room_description":
                         "A fuse on the ground. It looks usable.",
                       "objects": [],
                       "commands": {
@@ -104,7 +104,7 @@
         {
           "id": "shiny_object",
           "name": "Shiny Object",
-          "roomDescription": "A shiny object glittering on the floor.",
+          "room_description": "A shiny object glittering on the floor.",
           "objects": [],
           "commands": {
             "examine": [
@@ -119,7 +119,7 @@
                       "id": "fuse",
                       "name": "Fuse",
                       "inventoryDescription": "A Fuse. It looks usable.",
-                      "roomDescription":
+                      "room_description":
                         "A fuse on the ground. It looks usable.",
                       "objects": [],
                       "commands": {
@@ -150,7 +150,7 @@
         {
           "id": "western_exit",
           "name": "Western Door",
-          "roomDescription": "An exit to the West.",
+          "room_description": "An exit to the West.",
           "objects": [],
           "commands": {
             "go": [
@@ -171,7 +171,7 @@
         {
           "id": "fusebox",
           "name": "Fuse Box",
-          "roomDescription": "A fuse box, but it looks powered down.",
+          "room_description": "A fuse box, but it looks powered down.",
           "objects": [],
           "commands": {
             "use": [
@@ -242,7 +242,7 @@
         {
           "id": "minotaur",
           "name": "Minotaur",
-          "roomDescription":
+          "room_description":
             "A hoved beast lurks with a large scythe that no man should cross. It's standing in a pool of water in front of the North exit.",
           "objects": [],
           "commands": {
@@ -256,7 +256,7 @@
         {
           "id": "northern_exit",
           "name": "Northern Door",
-          "roomDescription": "An ornate door to the North. It's beautiful.",
+          "room_description": "An ornate door to the North. It's beautiful.",
           "objects": [],
           "commands": {
             "go": [
@@ -289,7 +289,8 @@
         {
           "id": "southern_exit",
           "name": "Southern Door",
-          "roomDescription": "An exit to the South, back to the starting room.",
+          "room_description":
+            "An exit to the South, back to the starting room.",
           "objects": [],
           "commands": {
             "go": [
@@ -309,7 +310,7 @@
         {
           "id": "southern_exit",
           "name": "Southern Door",
-          "roomDescription": "A Southern exit back to Da Boss Room.",
+          "room_description": "A Southern exit back to Da Boss Room.",
           "objects": [],
           "commands": {
             "go": [
@@ -322,7 +323,7 @@
         {
           "id": "treasure",
           "name": "Treasure",
-          "roomDescription": "A pile of treasure!",
+          "room_description": "A pile of treasure!",
           "objects": [],
           "commands": {
             "pickup": [
