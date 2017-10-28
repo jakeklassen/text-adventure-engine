@@ -336,6 +336,25 @@ rl
     console.log();
 
     switch (command) {
+      case 'help': {
+        console.log('Commands:\n');
+        console.log(' - drop: Drop an item from inventory');
+        console.log(' - examine:Eexmaine an object in the room');
+        console.log(
+          ' - go: Go direction. North, East, South and West are valid',
+        );
+        console.log(' - help: Show commands');
+        console.log(' - inventory: Show inventory');
+        console.log(' - look: Look around the room');
+        console.log(' - pickup: Try to pickup object in the room');
+        console.log(' - q/quit: Quit game');
+        console.log(
+          ' - use: Attempt to use an item from inventory on an object in the room',
+        );
+
+        break;
+      }
+
       case 'examine': {
         const objectName = rest.join(' ');
 
@@ -438,7 +457,7 @@ rl
         }
 
         processCommand(object.commands.pickup);
-        console.log(`Picked up ${objectName}`);
+        console.log(object.pickupText || `Picked up ${objectName}`);
 
         break;
       }
