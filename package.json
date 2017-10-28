@@ -6,21 +6,28 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "eslint:fix": "eslint -c .eslintrc.json --fix src",
-    "eslint:check":
-      "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
+    "eslint:check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "production": "node dist",
     "start": "node src",
     "start:watch": "nodemon -r babel-register src",
     "test": "ava --tap | faucet"
   },
-  "keywords": ["base", "javascript", "node.js"],
+  "keywords": [
+    "base",
+    "javascript",
+    "node.js"
+  ],
   "author": "Jake Klassen",
   "license": "MIT",
   "ava": {
     "babel": "inherit",
     "failFast": true,
-    "files": ["test/**/*.js"],
-    "require": ["babel-register"]
+    "files": [
+      "test/**/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ]
   },
   "devDependencies": {
     "ava": "^0.21.0",
@@ -41,6 +48,7 @@
     "prettier": "^1.5.3"
   },
   "dependencies": {
+    "chalk": "^2.3.0",
     "is_js": "^0.9.0"
   }
 }

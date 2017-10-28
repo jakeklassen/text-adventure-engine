@@ -12,7 +12,7 @@ player_change_room: String room_id
 
 player_has_items: [String] object_id
 
-player_pickup_object: { room: String, object: String } object
+player_pickup_item: { room: String, object: String } object
 
 player_remove_items: [String] [item names]
 
@@ -57,41 +57,43 @@ function getExit(direction) {
   return exit;
 }
 
-function processCommand(command = {}) {
+function processExpression(expression = {}) {
   try {
-    if (command.unless || command.if) {
+    if (expression.unless || expression.if) {
       let result = false;
 
-      if (command.unless) {
-        result = command.unless.every(
-          command => processCommand(command) === true,
+      if (expression.unless) {
+        result = expression.unless.every(
+          expression => processExpression(expression) === true,
         );
       } else {
-        result = command.if.every(command => processCommand(command) === true);
+        result = expression.if.every(
+          expression => processExpression(expression) === true,
+        );
       }
 
-      if (command.if) {
-        return command[result ? 'then' : 'else'].reduce(
-          (res, command) => res && processCommand(command),
+      if (expression.if) {
+        return expression[result ? 'then' : 'else'].reduce(
+          (res, expression) => res && processExpression(expression),
           true,
         );
       }
 
-      return command[result ? 'else' : 'then'].reduce(
-        (res, command) => res && processCommand(command),
+      return expression[result ? 'else' : 'then'].reduce(
+        (res, expression) => res && processExpression(expression),
         true,
       );
     }
 
-    if (command.show_message) {
-      console.log(command.show_message);
+    if (expression.show_message) {
+      console.log(expression.show_message);
       return true;
     }
 
     // Object commands
 
-    if (command.object_has_objects) {
-      return command.object_has_objects.every(
+    if (expression.object_has_objects) {
+      return expression.object_has_objects.every(
         ({ room: roomId, object: objectId, has }) => {
           const room = Game.rooms.find(r => r.id === roomId);
           if (!room) return false;
@@ -106,8 +108,8 @@ function processCommand(command = {}) {
 
     // Player commands
 
-    if (command.player_change_room) {
-      const roomId = command.player_change_room;
+    if (expression.player_change_room) {
+      const roomId = expression.player_change_room;
       const targetRoom = Game.rooms.find(room => room.id === roomId);
 
       if (!targetRoom) {
@@ -123,16 +125,16 @@ function processCommand(command = {}) {
       return true;
     }
 
-    if (command.player_has_items) {
-      return command.player_has_items.every(itemName =>
+    if (expression.player_has_items) {
+      return expression.player_has_items.every(itemName =>
         Game.player.inventory.find(
           item => item.name.toLowerCase() === itemName,
         ),
       );
     }
 
-    if (command.player_pickup_object) {
-      const { room: roomId, object: objectId } = command.player_pickup_object;
+    if (expression.player_pickup_item) {
+      const { room: roomId, object: objectId } = expression.player_pickup_item;
 
       const room = Game.rooms.find(({ id }) => id === roomId);
       Game.player.inventory.push(
@@ -150,8 +152,8 @@ function processCommand(command = {}) {
       return true;
     }
 
-    if (command.player_remove_items) {
-      command.player_remove_items.forEach(itemId => {
+    if (expression.player_remove_items) {
+      expression.player_remove_items.forEach(itemId => {
         const firstIndex = Game.player.inventory.findIndex(
           item => item.id === itemId,
         );
@@ -166,16 +168,16 @@ function processCommand(command = {}) {
       return true;
     }
 
-    if (command.player_used_item) {
-      return Game.player.last_used_item === command.player_used_item;
+    if (expression.player_used_item) {
+      return Game.player.last_used_item === expression.player_used_item;
     }
 
-    if (command.player_transfer_inventory_items_to_object) {
+    if (expression.player_transfer_inventory_items_to_object) {
       const {
         items,
         room: roomId,
         object: objectId,
-      } = command.player_transfer_inventory_items_to_object;
+      } = expression.player_transfer_inventory_items_to_object;
 
       const room = Game.rooms.find(r => r.id === roomId);
 
@@ -223,8 +225,8 @@ function processCommand(command = {}) {
 
     // Room commands
 
-    if (command.room_add_objects) {
-      command.room_add_objects.forEach(({ room: roomId, object }) => {
+    if (expression.room_add_objects) {
+      expression.room_add_objects.forEach(({ room: roomId, object }) => {
         const room = Game.rooms.find(({ id }) => id === roomId);
         room.objects.push(object);
       });
@@ -232,8 +234,8 @@ function processCommand(command = {}) {
       return true;
     }
 
-    if (command.room_remove_objects) {
-      command.room_remove_objects.forEach(
+    if (expression.room_remove_objects) {
+      expression.room_remove_objects.forEach(
         ({ room: roomId, object: objectId }) => {
           const room = Game.rooms.find(({ id }) => id === roomId);
 
@@ -253,8 +255,8 @@ function processCommand(command = {}) {
       return true;
     }
 
-    if (command.room_has_objects) {
-      return command.room_has_objects.every(
+    if (expression.room_has_objects) {
+      return expression.room_has_objects.every(
         ({ room: roomId, object: objectId }) => {
           const room = Game.rooms.find(room => room.id === roomId);
 
@@ -265,12 +267,12 @@ function processCommand(command = {}) {
       );
     }
 
-    if (command.room_update_object_room_description) {
+    if (expression.room_update_object_room_description) {
       const {
         room: roomId,
         object: objectId,
         room_description: roomDescription,
-      } = command.room_update_object_room_description;
+      } = expression.room_update_object_room_description;
 
       const room = Game.rooms.find(r => r.id === roomId);
 
@@ -295,7 +297,7 @@ function processCommand(command = {}) {
       return true;
     }
 
-    console.log('Unrecognized command', command);
+    console.log('Unrecognized command', expression);
 
     return false;
   } catch (error) {
@@ -304,9 +306,9 @@ function processCommand(command = {}) {
   }
 }
 
-function processCommands(commands) {
-  for (const command of commands) {
-    if (processCommand(command) === false) break;
+function processCommand(commandExpressions) {
+  for (const expression of commandExpressions) {
+    if (processExpression(expression) === false) break;
   }
 }
 
@@ -316,7 +318,9 @@ console.log(Game.intro_text);
 console.log();
 
 // Check if player has already won
-if (Game.win_conditions.map(processCommand).every(result => result === true)) {
+if (
+  Game.win_conditions.map(processExpression).every(result => result === true)
+) {
   console.log('You won before you even started');
 }
 
@@ -358,7 +362,7 @@ rl
           break;
         }
 
-        processCommands(object.commands.examine);
+        processCommand(object.commands.examine);
 
         break;
       }
@@ -402,7 +406,7 @@ rl
           break;
         }
 
-        processCommands(exit.commands.go);
+        processCommand(exit.commands.go);
 
         break;
       }
@@ -433,7 +437,39 @@ rl
           break;
         }
 
-        processCommands(object.commands.pickup);
+        processCommand(object.commands.pickup);
+        console.log(`Picked up ${objectName}`);
+
+        break;
+      }
+
+      case 'drop': {
+        const objectName = rest.join(' ');
+
+        if (!objectName) {
+          console.log('You cannot drop nothing');
+          break;
+        }
+
+        const item = Game.player.inventory.find(
+          ({ name }) => name.toLowerCase() === objectName,
+        );
+
+        if (!item) {
+          console.log(`You are not carrying ${objectName}`);
+          break;
+        }
+
+        const room = Game.rooms.find(
+          ({ id }) => id === Game.player.current_room,
+        );
+
+        room.objects.push(item);
+        Game.player.inventory = Game.player.inventory.filter(
+          ({ name }) => name.toLowerCase() !== objectName,
+        );
+
+        console.log(`Dropped ${objectName}`);
 
         break;
       }
@@ -473,7 +509,7 @@ rl
 
         Game.player.last_used_item = itemName;
 
-        processCommands(target.commands.use);
+        processCommand(target.commands.use);
 
         break;
       }
@@ -493,7 +529,9 @@ rl
 
     // Check if player has already won
     if (
-      Game.win_conditions.map(processCommand).every(result => result === true)
+      Game.win_conditions
+        .map(processExpression)
+        .every(result => result === true)
     ) {
       console.log('Congratulations! You won much game!');
       rl.close();

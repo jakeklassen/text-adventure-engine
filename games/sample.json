@@ -79,7 +79,7 @@
                       "commands": {
                         "pickup": [
                           {
-                            "player_pickup_object": {
+                            "player_pickup_item": {
                               "room": "electrical_room",
                               "object": "fuse"
                             }
@@ -125,7 +125,7 @@
                       "commands": {
                         "pickup": [
                           {
-                            "player_pickup_object": {
+                            "player_pickup_item": {
                               "room": "electrical_room",
                               "object": "fuse"
                             }
@@ -328,7 +328,7 @@
           "commands": {
             "pickup": [
               {
-                "player_pickup_object": {
+                "player_pickup_item": {
                   "room": "treasure_room",
                   "object": "treasure"
                 }
