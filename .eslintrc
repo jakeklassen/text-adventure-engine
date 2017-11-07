@@ -4,6 +4,16 @@
   "rules": {
     "no-console": "off",
     "no-shadow": "off",
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "game", // for Game setters
+          "t" // for ava test
+        ]
+      }
+    ],
     "no-restricted-syntax": [
       "error",
       {
