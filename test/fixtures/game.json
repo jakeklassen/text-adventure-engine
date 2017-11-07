@@ -8,7 +8,7 @@
       "player_has_items": ["treasure"]
     }
   ],
-  "you_win_text": "You got the treasure and ripped that Minotaur a new one.",
+  "you_win_text": "You got the treasure and ripped that Minotaur a new one.\n",
   "player": {
     "current_room": "starting_room",
     "inventory": []
