@@ -6,21 +6,28 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "eslint:fix": "eslint -c .eslintrc.json --fix src",
-    "eslint:check":
-      "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
+    "eslint:check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "production": "node dist",
     "start": "node -r babel-register src",
     "start:watch": "nodemon -r babel-register src",
     "test": "ava"
   },
-  "keywords": ["base", "javascript", "node.js"],
+  "keywords": [
+    "base",
+    "javascript",
+    "node.js"
+  ],
   "author": "Jake Klassen",
   "license": "MIT",
   "ava": {
     "babel": "inherit",
     "failFast": true,
-    "files": ["test/**/*.js"],
-    "require": ["babel-register"],
+    "files": [
+      "test/**/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
     "verbose": true
   },
   "devDependencies": {
