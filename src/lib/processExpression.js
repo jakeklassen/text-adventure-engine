@@ -56,7 +56,9 @@ export default function processExpression(game, expression = {}) {
 
       if (!targetRoom) {
         console.log(
-          `Possible game bug. 'player_change_room' failed: Room ${roomId} not found`,
+          `Possible game bug. 'player_change_room' failed: Room ${
+            roomId
+          } not found`,
         );
 
         return false;

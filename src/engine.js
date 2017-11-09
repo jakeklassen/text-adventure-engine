@@ -1,24 +1,8 @@
 import parseInput from 'lib/parseInput';
 import processExpression from 'lib/processExpression';
+import getRoomExit from 'lib/getRoomExit';
+import box from 'lib/box';
 import createGame from 'game';
-
-function findRoomExit(room, direction) {
-  let exit = null;
-
-  switch (direction) {
-    case 'north':
-    case 'east':
-    case 'south':
-    case 'west': {
-      exit = room.objects.find(object => object.id === `${direction}ern_exit`);
-      break;
-    }
-    default:
-      break;
-  }
-
-  return exit;
-}
 
 const HELP_TEXT = `Commands:
 
@@ -33,16 +17,10 @@ const HELP_TEXT = `Commands:
  - q/quit: Quit game
 `;
 
-const box = items => (Array.isArray(items) ? items : [items]);
-
 const createEngine = ({ inputManager, gameSource }) => {
   const game = createGame(gameSource);
 
   return {
-    get game() {
-      return game;
-    },
-
     start() {
       inputManager.prompt();
       inputManager.on('line', answer => this.loop(answer));
@@ -66,8 +44,6 @@ const createEngine = ({ inputManager, gameSource }) => {
     },
 
     loop(answer) {
-      console.log();
-
       const [command, ...rest] = parseInput(answer);
 
       switch (command) {
@@ -111,7 +87,7 @@ const createEngine = ({ inputManager, gameSource }) => {
 
         case 'go': {
           const direction = rest.join(' ');
-          const exit = findRoomExit(game.currentRoom, direction);
+          const exit = getRoomExit(game.currentRoom, direction);
 
           if (!exit) {
             console.log(`Cannot go ${direction}`);
@@ -143,9 +119,7 @@ const createEngine = ({ inputManager, gameSource }) => {
             .split('on')
             .map(words => words.trim());
 
-          const playerHasItem = game.playerHasItem(itemName);
-
-          if (!playerHasItem) {
+          if (!game.playerHasItem(itemName)) {
             console.log(`You don't have ${itemName}`);
             break;
           }
@@ -188,7 +162,6 @@ const createEngine = ({ inputManager, gameSource }) => {
         this.quit();
       }
 
-      console.log();
       inputManager.prompt();
     },
 

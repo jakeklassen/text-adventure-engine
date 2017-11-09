@@ -1,5 +1,3 @@
-/* eslint no-console: "error" */
-
 // Interface to the JSON game data
 import { EventEmitter } from 'events';
 
@@ -82,7 +80,9 @@ const createGame = gameSource => {
       if (!targetRoom) {
         this.emitter.emit(
           'message',
-          `Possible game bug. 'player_change_room' failed: Room '${roomId}' not found.`,
+          `Possible game bug. 'player_change_room' failed: Room '${
+            roomId
+          }' not found.`,
         );
 
         return false;
