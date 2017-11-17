@@ -19,8 +19,7 @@
           "node": "current"
         }
       }
-    ],
-    "stage-2"
+    ]
   ],
   "ignore": ["node_modules"]
 }
