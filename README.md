@@ -1,6 +1,6 @@
 # Text Adventure Engine Using Node.js
 
-**NOTE** This is being rewritten in TypeScript. This is me publishing a 2 year old repo to github.
+**NOTE** This is being rewritten in TypeScript. I'm publishing a 2 year old gitlab repo to github.
 
 This engine parses and executes data driven design documents in JSON.
 
