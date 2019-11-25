@@ -4,7 +4,7 @@
 
 This engine parses and executes data driven design documents in JSON.
 
-## How to Play
+## How to Play the Sample Game
 
 `yarn start`
 
