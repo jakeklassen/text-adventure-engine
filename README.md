@@ -1,8 +1,14 @@
 # Text Adventure Engine Using Node.js
 
-Source code for Udemy course.
+**NOTE** This is being rewritten in TypeScript. This is me publishing a 2 year old repo to github.
 
 This engine parses and executes data driven design documents in JSON.
+
+## How to Play
+
+`yarn start`
+
+Type `help` if you get stuck.
 
 ## Folder Structure
 
@@ -26,4 +32,3 @@ test/
     game.json # Example game for testing
   ...
 ```
-

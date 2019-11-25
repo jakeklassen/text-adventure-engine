@@ -1,6 +1,4 @@
 {
   "vsicons.presets.angular": false,
-  "editor.formatOnSave": true,
-  "prettier.eslintIntegration": true,
-  "eslint.enable": true
+  "editor.formatOnSave": true
 }

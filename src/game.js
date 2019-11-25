@@ -8,6 +8,10 @@ const createGame = gameSource => {
   return {
     emitter: new EventEmitter(),
 
+    get rooms() {
+      return game.rooms;
+    },
+
     get currentRoom() {
       return game.rooms.find(room => room.id === game.player.current_room);
     },
@@ -30,12 +34,12 @@ const createGame = gameSource => {
       const name = objectName.trim().toLowerCase();
       const object = this.getObjectByName(name);
 
-      if (!object) {
+      if (object == null) {
         this.emitter.emit('message', `Cannot find ${name} in room.`);
         return null;
       }
 
-      return object.commands.go;
+      return object.commands.examine;
     },
 
     getObjectByName(objectName) {
@@ -80,9 +84,7 @@ const createGame = gameSource => {
       if (!targetRoom) {
         this.emitter.emit(
           'message',
-          `Possible game bug. 'player_change_room' failed: Room '${
-            roomId
-          }' not found.`,
+          `Possible game bug. 'player_change_room' failed: Room '${roomId}' not found.`,
         );
 
         return false;

@@ -1,13 +1,14 @@
 {
-  "name": "text-adventure-engine-using-node",
+  "name": "text-adventure-engine",
   "version": "0.1.0",
-  "description": "Source code for Udemy course",
+  "description": "Node.js text adventure engine",
   "main": "index.js",
   "scripts": {
     "build": "babel src --out-dir dist",
     "eslint:fix": "eslint -c .eslintrc.json --fix src",
     "eslint:check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "production": "node dist",
+    "debug": "node --inspect -r babel-register src",
     "start": "node -r babel-register src",
     "start:watch": "nodemon -r babel-register src",
     "test": "ava"
@@ -36,16 +37,16 @@
     "babel-eslint": "^7.2.3",
     "babel-plugin-module-resolver": "^2.7.1",
     "babel-plugin-transform-strict-mode": "^6.24.1",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^4.6.1",
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-config-prettier": "^2.4.0",
     "eslint-import-resolver-babel-module": "3.0.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^2.1.2",
     "faucet": "^0.0.1",
     "nodemon": "^1.11.0",
-    "prettier": "^1.5.3"
+    "prettier": "^1.19.1"
   },
   "dependencies": {
     "chalk": "^2.3.0",

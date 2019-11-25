@@ -7,7 +7,7 @@ import createGame from 'game';
 const HELP_TEXT = `Commands:
 
  - drop: Drop an item from inventory
- - examine:Eexmaine an object in the room
+ - examine: Examine an object in the room
  - go: Go direction. North, East, South and West are valid
  - help: Show commands
  - inventory: Show inventory
@@ -66,14 +66,14 @@ const createEngine = ({ inputManager, gameSource }) => {
 
         case 'examine': {
           const objectName = rest.join(' ');
-          const goCommand = game.examineObject(objectName);
+          const examineCommand = game.examineObject(objectName);
 
-          if (!goCommand) {
+          if (!examineCommand) {
             console.log(`Cannot examine ${objectName}`);
             break;
           }
 
-          this.processCommand(goCommand);
+          this.processCommand(examineCommand);
           break;
         }
 
