@@ -1,4 +1,4 @@
-export default function processExpression(game, expression = {}) {
+export function processExpression(game, expression = {}) {
   try {
     if (expression.unless || expression.if) {
       let result = false;

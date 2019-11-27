@@ -1,8 +1,9 @@
-import parseInput from 'lib/parseInput';
-import processExpression from 'lib/processExpression';
-import getRoomExit from 'lib/getRoomExit';
-import box from 'lib/box';
-import createGame from 'game';
+import readline from 'readline';
+import { createGame } from './game';
+import { box } from './lib/box';
+import { getRoomExit } from './lib/getRoomExit';
+import { parseInput } from './lib/parseInput';
+import { processExpression } from './lib/processExpression';
 
 const HELP_TEXT = `Commands:
 
@@ -17,7 +18,13 @@ const HELP_TEXT = `Commands:
  - q/quit: Quit game
 `;
 
-const createEngine = ({ inputManager, gameSource }) => {
+const createEngine = ({
+  inputManager,
+  gameSource,
+}: {
+  inputManager: readline.Interface;
+  gameSource: string;
+}) => {
   const game = createGame(gameSource);
 
   return {

@@ -1,6 +1,6 @@
 import readline from 'readline';
-import createEngine from 'engine';
 import gameSource from '../games/sample.json';
+import createEngine from './engine';
 
 const rl = readline.createInterface({
   input: process.stdin,

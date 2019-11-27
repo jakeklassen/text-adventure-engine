@@ -1,4 +1,4 @@
-export default function(room, direction) {
+export function getRoomExit(room, direction) {
   let exit = null;
 
   switch (direction) {

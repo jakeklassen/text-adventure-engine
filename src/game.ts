@@ -1,7 +1,7 @@
 // Interface to the JSON game data
 import { EventEmitter } from 'events';
 
-const createGame = gameSource => {
+export const createGame = (gameSource: string) => {
   const game = JSON.parse(JSON.stringify(gameSource));
   // Validate against JSON Schema at this point
 
@@ -120,8 +120,6 @@ const createGame = gameSource => {
     },
 
     playerHasItems(objectIds = []) {
-      if (objectIds.length === 0) return false;
-
       return objectIds.every(objectId =>
         game.player.inventory.find(object => object.id === objectId),
       );
@@ -204,5 +202,3 @@ const createGame = gameSource => {
     },
   };
 };
-
-export default createGame;
