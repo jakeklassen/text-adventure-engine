@@ -1,204 +1,207 @@
 // Interface to the JSON game data
+import { plainToClass } from 'class-transformer';
 import { EventEmitter } from 'events';
+import { Game } from './classes/game';
 
-export const createGame = (gameSource: string) => {
-  const game = JSON.parse(JSON.stringify(gameSource));
-  // Validate against JSON Schema at this point
+export const createGame = (gameSource: object) => {
+  const game = plainToClass(Game, gameSource);
 
-  return {
-    emitter: new EventEmitter(),
+  return game;
 
-    get rooms() {
-      return game.rooms;
-    },
+  // return {
+  //   emitter: new EventEmitter(),
 
-    get currentRoom() {
-      return game.rooms.find(room => room.id === game.player.current_room);
-    },
+  //   get rooms() {
+  //     return game.rooms;
+  //   },
 
-    set currentRoom(roomId) {
-      if (!this.getRoomById(roomId)) return;
+  //   get currentRoom() {
+  //     return game.rooms.find(room => room.id === game.player.current_room);
+  //   },
 
-      game.player.current_room = roomId;
-    },
+  //   set currentRoom(roomId) {
+  //     if (!this.getRoomById(roomId)) return;
 
-    get lastItemUsed() {
-      return game.player.last_item_used;
-    },
+  //     game.player.current_room = roomId;
+  //   },
 
-    set lastItemUsed(itemName) {
-      game.player.last_item_used = itemName;
-    },
+  //   get lastItemUsed() {
+  //     return game.player.last_item_used;
+  //   },
 
-    examineObject(objectName = '') {
-      const name = objectName.trim().toLowerCase();
-      const object = this.getObjectByName(name);
+  //   set lastItemUsed(itemName) {
+  //     game.player.last_item_used = itemName;
+  //   },
 
-      if (object == null) {
-        this.emitter.emit('message', `Cannot find ${name} in room.`);
-        return null;
-      }
+  //   examineObject(objectName = '') {
+  //     const name = objectName.trim().toLowerCase();
+  //     const object = this.getObjectByName(name);
 
-      return object.commands.examine;
-    },
+  //     if (object == null) {
+  //       this.emitter.emit('message', `Cannot find ${name} in room.`);
+  //       return null;
+  //     }
 
-    getObjectByName(objectName) {
-      return this.currentRoom.objects.find(
-        object => object.name.trim().toLowerCase() === objectName,
-      );
-    },
+  //     return object.commands.examine;
+  //   },
 
-    describeInventory() {
-      let message = `Inventory (${this.playerInventory.length}):\n\n`;
+  //   getObjectByName(objectName) {
+  //     return this.currentRoom.objects.find(
+  //       object => object.name.trim().toLowerCase() === objectName,
+  //     );
+  //   },
 
-      if (this.playerInventory.length === 0) {
-        message += 'You have no items';
-      } else {
-        this.playerInventory.forEach(item => {
-          message += ` - ${item.inventory_description}\n`;
-        });
-      }
+  //   describeInventory() {
+  //     let message = `Inventory (${this.playerInventory.length}):\n\n`;
 
-      return message;
-    },
+  //     if (this.playerInventory.length === 0) {
+  //       message += 'You have no items';
+  //     } else {
+  //       this.playerInventory.forEach(item => {
+  //         message += ` - ${item.inventory_description}\n`;
+  //       });
+  //     }
 
-    look() {
-      let message = `${this.currentRoom.description}\n\nYou see: \n\n`;
+  //     return message;
+  //   },
 
-      if (this.currentRoom.objects.length === 0) {
-        message += 'An empty room...';
-      } else {
-        this.currentRoom.objects
-          .filter(object => object.room_description != null)
-          .forEach(object => {
-            message += ` - ${object.room_description}\n`;
-          });
-      }
+  //   look() {
+  //     let message = `${this.currentRoom.description}\n\nYou see: \n\n`;
 
-      return message;
-    },
+  //     if (this.currentRoom.objects.length === 0) {
+  //       message += 'An empty room...';
+  //     } else {
+  //       this.currentRoom.objects
+  //         .filter(object => object.room_description != null)
+  //         .forEach(object => {
+  //           message += ` - ${object.room_description}\n`;
+  //         });
+  //     }
 
-    playerChangeRoom(roomId) {
-      const targetRoom = this.getRoomById(roomId);
+  //     return message;
+  //   },
 
-      if (!targetRoom) {
-        this.emitter.emit(
-          'message',
-          `Possible game bug. 'player_change_room' failed: Room '${roomId}' not found.`,
-        );
+  //   playerChangeRoom(roomId) {
+  //     const targetRoom = this.getRoomById(roomId);
 
-        return false;
-      }
+  //     if (!targetRoom) {
+  //       this.emitter.emit(
+  //         'message',
+  //         `Possible game bug. 'player_change_room' failed: Room '${roomId}' not found.`,
+  //       );
 
-      this.currentRoom = roomId;
-      this.emitter.emit('message', `You entered ${targetRoom.name}.`);
+  //       return false;
+  //     }
 
-      return true;
-    },
+  //     this.currentRoom = roomId;
+  //     this.emitter.emit('message', `You entered ${targetRoom.name}.`);
 
-    getRoomById(roomId) {
-      return game.rooms.find(room => room.id === roomId);
-    },
+  //     return true;
+  //   },
 
-    getRoomByName(name = '') {
-      return game.rooms.find(
-        room => room.name.toLowerCase() === name.toLowerCase(),
-      );
-    },
+  //   getRoomById(roomId) {
+  //     return game.rooms.find(room => room.id === roomId);
+  //   },
 
-    objectHasObjects(objects = []) {
-      return objects.every(({ room: roomId, object: objectId, has }) => {
-        const room = game.rooms.find(room => room.id === roomId);
+  //   getRoomByName(name = '') {
+  //     return game.rooms.find(
+  //       room => room.name.toLowerCase() === name.toLowerCase(),
+  //     );
+  //   },
 
-        if (!room) return false;
+  //   objectHasObjects(objects = []) {
+  //     return objects.every(({ room: roomId, object: objectId, has }) => {
+  //       const room = game.rooms.find(room => room.id === roomId);
 
-        const object = room.objects.find(o => o.id === objectId);
-        if (!object) return false;
+  //       if (!room) return false;
 
-        return object.objects.find(o => o.id === has);
-      });
-    },
+  //       const object = room.objects.find(o => o.id === objectId);
+  //       if (!object) return false;
 
-    playerHasItems(objectIds = []) {
-      return objectIds.every(objectId =>
-        game.player.inventory.find(object => object.id === objectId),
-      );
-    },
+  //       return object.objects.find(o => o.id === has);
+  //     });
+  //   },
 
-    playerHasItem(objectName = '') {
-      return this.playerInventory.find(
-        item => item.name.toLowerCase() === objectName,
-      );
-    },
+  //   playerHasItems(objectIds = []) {
+  //     return objectIds.every(objectId =>
+  //       game.player.inventory.find(object => object.id === objectId),
+  //     );
+  //   },
 
-    playerHasItemById(objectId = '') {
-      return this.playerInventory.find(item => item.id === objectId);
-    },
+  //   playerHasItem(objectName = '') {
+  //     return this.playerInventory.find(
+  //       item => item.name.toLowerCase() === objectName,
+  //     );
+  //   },
 
-    get playerInventory() {
-      return game.player.inventory;
-    },
+  //   playerHasItemById(objectId = '') {
+  //     return this.playerInventory.find(item => item.id === objectId);
+  //   },
 
-    set playerInventory(inventory = []) {
-      game.player.inventory = inventory;
-    },
+  //   get playerInventory() {
+  //     return game.player.inventory;
+  //   },
 
-    playerInventoryRemoveItemById(itemId = '') {
-      this.playerInventory = this.playerInventory.filter(
-        item => item.id !== itemId,
-      );
-    },
+  //   set playerInventory(inventory = []) {
+  //     game.player.inventory = inventory;
+  //   },
 
-    getInventoryItem(objectName = '') {
-      return this.playerInventory.find(
-        object =>
-          object.name.trim().toLowerCase() === objectName.trim().toLowerCase(),
-      );
-    },
+  //   playerInventoryRemoveItemById(itemId = '') {
+  //     this.playerInventory = this.playerInventory.filter(
+  //       item => item.id !== itemId,
+  //     );
+  //   },
 
-    playerDropItem(objectName = '') {
-      const item = this.getInventoryItem(objectName);
+  //   getInventoryItem(objectName = '') {
+  //     return this.playerInventory.find(
+  //       object =>
+  //         object.name.trim().toLowerCase() === objectName.trim().toLowerCase(),
+  //     );
+  //   },
 
-      if (!item) return null;
+  //   playerDropItem(objectName = '') {
+  //     const item = this.getInventoryItem(objectName);
 
-      this.playerInventory = this.playerInventory.filter(
-        object => object.id !== item.id,
-      );
+  //     if (!item) return null;
 
-      this.currentRoom.objects = [...this.currentRoom.objects, item];
+  //     this.playerInventory = this.playerInventory.filter(
+  //       object => object.id !== item.id,
+  //     );
 
-      return item;
-    },
+  //     this.currentRoom.objects = [...this.currentRoom.objects, item];
 
-    playerPickupItem(objectName = '') {
-      const name = objectName.trim().toLowerCase();
-      const object = this.currentRoom.objects.find(
-        object => object.name.trim().toLowerCase() === name,
-      );
+  //     return item;
+  //   },
 
-      if (!object) {
-        this.emitter.emit(
-          'message',
-          `'${objectName}' not found in current room.`,
-        );
+  //   playerPickupItem(objectName = '') {
+  //     const name = objectName.trim().toLowerCase();
+  //     const object = this.currentRoom.objects.find(
+  //       object => object.name.trim().toLowerCase() === name,
+  //     );
 
-        return false;
-      }
+  //     if (!object) {
+  //       this.emitter.emit(
+  //         'message',
+  //         `'${objectName}' not found in current room.`,
+  //       );
 
-      this.playerInventory = [...this.playerInventory, object];
-      this.currentRoom.objects = this.currentRoom.objects.filter(
-        ({ id }) => id !== object.id,
-      );
+  //       return false;
+  //     }
 
-      return true;
-    },
+  //     this.playerInventory = [...this.playerInventory, object];
+  //     this.currentRoom.objects = this.currentRoom.objects.filter(
+  //       ({ id }) => id !== object.id,
+  //     );
 
-    get youWinText() {
-      return game.you_win_text;
-    },
+  //     return true;
+  //   },
 
-    get winConditions() {
-      return game.win_conditions;
-    },
-  };
+  //   get youWinText() {
+  //     return game.you_win_text;
+  //   },
+
+  //   get winConditions() {
+  //     return game.win_conditions;
+  //   },
+  // };
 };

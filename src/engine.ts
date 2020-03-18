@@ -5,6 +5,18 @@ import { getRoomExit } from './lib/getRoomExit';
 import { parseInput } from './lib/parseInput';
 import { processExpression } from './lib/processExpression';
 
+export enum Command {
+  Drop = 'drop',
+  Examine = 'examine',
+  Go = 'go',
+  Help = 'help',
+  Inventory = 'inventory',
+  Look = 'look',
+  Pickup = 'pickup',
+  Use = 'use',
+  Quit = 'quit',
+}
+
 const HELP_TEXT = `Commands:
 
  - drop: Drop an item from inventory
@@ -23,7 +35,7 @@ const createEngine = ({
   gameSource,
 }: {
   inputManager: readline.Interface;
-  gameSource: string;
+  gameSource: object;
 }) => {
   const game = createGame(gameSource);
 
@@ -40,7 +52,9 @@ const createEngine = ({
       const boxed = box(expressions);
 
       for (const expression of boxed) {
-        if (processExpression(game, expression) === false) return false;
+        if (processExpression(game, expression) === false) {
+          return false;
+        }
       }
 
       return true;
@@ -50,17 +64,17 @@ const createEngine = ({
       return this.processCommand(game.winConditions);
     },
 
-    loop(answer) {
+    loop(answer: string) {
       const [command, ...rest] = parseInput(answer);
 
       switch (command) {
-        case 'help':
+        case Command.Help:
           console.log(HELP_TEXT);
           break;
 
-        case 'drop': {
+        case Command.Drop: {
           const itemName = rest.join(' ');
-          const item = game.playerDropItem(itemName);
+          const item = game.dropPlayerItemByName(itemName);
 
           if (!item) {
             console.log(`You are not carrying ${itemName}`);
@@ -71,7 +85,7 @@ const createEngine = ({
           break;
         }
 
-        case 'examine': {
+        case Command.Examine: {
           const objectName = rest.join(' ');
           const examineCommand = game.examineObject(objectName);
 
@@ -84,17 +98,17 @@ const createEngine = ({
           break;
         }
 
-        case 'look':
+        case Command.Look:
           console.log(game.look());
           break;
 
-        case 'inventory':
+        case Command.Inventory:
           console.log(game.describeInventory());
           break;
 
-        case 'go': {
+        case Command.Go: {
           const direction = rest.join(' ');
-          const exit = getRoomExit(game.currentRoom, direction);
+          const exit = getRoomExit(game.getCurrentRoom(), direction);
 
           if (!exit) {
             console.log(`Cannot go ${direction}`);
@@ -105,53 +119,53 @@ const createEngine = ({
           break;
         }
 
-        case 'pickup': {
+        case Command.Pickup: {
           const item = rest.join(' ');
-          const object = game.currentRoom.objects.find(
-            object => object.name.toLowerCase() === item,
-          );
+          const roomObject = game
+            .getCurrentRoom()
+            .objects.find(object => object.name.toLowerCase() === item);
 
-          if (!object) {
+          if (roomObject == null) {
             console.log(`${item} is not in the room.`);
             break;
           }
 
-          this.processCommand(object.commands.pickup);
+          this.processCommand(roomObject.commands.Pickup);
           break;
         }
 
-        case 'use': {
+        case Command.Use: {
           const [itemName, targetObjectName] = rest
             .join(' ')
             .split('on')
             .map(words => words.trim());
 
-          if (!game.playerHasItem(itemName)) {
+          if (!game.playerHasItemByName(itemName)) {
             console.log(`You don't have ${itemName}`);
             break;
           }
 
-          const target = game.getObjectByName(targetObjectName);
+          const roomObject = game.getCurrentRoomObjectByName(targetObjectName);
 
-          if (!target) {
+          if (roomObject == null) {
             console.log(`Cound not find ${targetObjectName} in room.`);
             break;
           }
 
-          if (!target.commands.use) {
+          if (roomObject.commands.use == null) {
             console.log(`Cannot use ${itemName} on ${targetObjectName}.`);
             break;
           }
 
-          game.lastItemUsed = itemName;
+          game.setLastItemUsedId(roomObject);
 
-          this.processCommand(target.commands.use);
+          this.processCommand(roomObject.commands.use);
 
           break;
         }
 
         case 'q':
-        case 'quit':
+        case Command.Quit:
           inputManager.close();
           break;
 

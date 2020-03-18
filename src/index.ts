@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import readline from 'readline';
 import gameSource from '../games/sample.json';
 import createEngine from './engine';

@@ -1,35 +1,33 @@
 {
   "title": "An Epic Dungeon Adventure",
   "author": "Jake Klassen",
-  "intro_text":
-    "You've just escaped from your cell. It's time to get the hell out of here.",
-  "win_conditions": [
+  "introText": "You've just escaped from your cell. It's time to get the hell out of here.",
+  "winConditions": [
     {
-      "player_has_items": ["treasure"]
+      "playerHasItems": ["treasure"]
     }
   ],
-  "you_win_text": "You got the treasure and ripped that Minotaur a new one.\n",
+  "youWinText": "You got the treasure and ripped that Minotaur a new one.\n",
   "player": {
-    "current_room": "starting_room",
+    "currentRoomId": "starting_room",
+    "lastItemUsedId": "",
     "inventory": []
   },
   "rooms": [
     {
       "id": "starting_room",
       "name": "Starting Room",
-      "description":
-        "A room just North of the holding cells, but there's no point in going back to that dead end...",
+      "description": "A room just North of the holding cells, but there's no point in going back to that dead end...",
       "objects": [
         {
           "id": "eastern_exit",
           "name": "Eastern Exit",
-          "room_description":
-            "An exit to the East. You can hear a faint buzzing.",
+          "roomDescription": "An exit to the East. You can hear a faint buzzing.",
           "objects": [],
           "commands": {
             "go": [
               {
-                "player_change_room": "electrical_room"
+                "playerChangeRoom": "electrical_room"
               }
             ]
           }
@@ -37,13 +35,12 @@
         {
           "id": "northern_exit",
           "name": "Northern Exit",
-          "room_description":
-            "An exit to the North. A demonic figure is embossed on the metal.",
+          "roomDescription": "An exit to the North. A demonic figure is embossed on the metal.",
           "objects": [],
           "commands": {
             "go": [
               {
-                "player_change_room": "boss_room"
+                "playerChangeRoom": "boss_room"
               }
             ]
           }
@@ -58,13 +55,13 @@
         {
           "id": "fuse",
           "name": "Fuse",
-          "inventory_description": "A Fuse. It looks usable.",
-          "room_description": "A fuse on the ground. It looks usable.",
+          "inventoryDescription": "A Fuse. It looks usable.",
+          "roomDescription": "A fuse on the ground. It looks usable.",
           "objects": [],
           "commands": {
             "pickup": [
               {
-                "player_pickup_item": "fuse"
+                "playerPickupItem": "fuse"
               }
             ]
           }
@@ -72,28 +69,27 @@
         {
           "id": "shiny_object",
           "name": "Shiny Object",
-          "room_description": "A shiny object glittering on the floor.",
+          "roomDescription": "A shiny object glittering on the floor.",
           "objects": [],
           "commands": {
             "examine": [
               {
-                "show_message": "You discovered a fuse"
+                "showMessage": "You discovered a fuse"
               },
               {
-                "room_add_objects": [
+                "roomAddObjects": [
                   {
                     "room": "electrical_room",
                     "object": {
                       "id": "fuse",
                       "name": "Fuse",
-                      "inventory_description": "A Fuse. It looks usable.",
-                      "room_description":
-                        "A fuse on the ground. It looks usable.",
+                      "inventoryDescription": "A Fuse. It looks usable.",
+                      "roomDescription": "A fuse on the ground. It looks usable.",
                       "objects": [],
                       "commands": {
                         "pickup": [
                           {
-                            "player_pickup_item": "fuse"
+                            "playerPickupItem": "fuse"
                           }
                         ]
                       }
@@ -102,7 +98,7 @@
                 ]
               },
               {
-                "room_remove_objects": [
+                "roomRemoveObjects": [
                   {
                     "room": "electrical_room",
                     "object": "shiny_object"
@@ -115,12 +111,12 @@
         {
           "id": "western_exit",
           "name": "Western Exit",
-          "room_description": "An exit to the West.",
+          "roomDescription": "An exit to the West.",
           "objects": [],
           "commands": {
             "go": [
               {
-                "player_change_room": "starting_room"
+                "playerChangeRoom": "starting_room"
               }
             ]
           }
@@ -130,20 +126,19 @@
     {
       "id": "boss_room",
       "name": "Da Boss Room",
-      "description":
-        "Did you see the damn door you came through?! This is Da Boss Room.",
+      "description": "Did you see the damn door you came through?! This is Da Boss Room.",
       "objects": [
         {
           "id": "fusebox",
           "name": "Fuse Box",
-          "room_description": "A fuse box, but it looks powered down.",
+          "roomDescription": "A fuse box, but it looks powered down.",
           "objects": [],
           "commands": {
             "use": [
               {
                 "if": [
                   {
-                    "object_has_objects": [
+                    "objectHasObjects": [
                       {
                         "room": "boss_room",
                         "object": "fusebox",
@@ -154,38 +149,36 @@
                 ],
                 "then": [
                   {
-                    "show_message": "The fuse box is already activated."
+                    "showMessage": "The fuse box is already activated."
                   }
                 ],
                 "else": [
                   {
                     "if": [
                       {
-                        "player_used_item": "fuse"
+                        "playerUsedItem": "fuse"
                       }
                     ],
                     "then": [
                       {
-                        "player_transfer_inventory_items_to_object": {
+                        "playerTransferInventoryItemsToObject": {
                           "items": ["fuse"],
                           "room": "boss_room",
                           "object": "fusebox"
                         }
                       },
                       {
-                        "room_update_object_room_description": {
+                        "roomUpdateObjectRoomDescription": {
                           "room": "boss_room",
                           "object": "fusebox",
-                          "room_description":
-                            "A fuse box, but it's already activated."
+                          "room_description": "A fuse box, but it's already activated."
                         }
                       },
                       {
-                        "show_message":
-                          "The fuse box activates, electrifying the water, killing the minotaur."
+                        "showMessage": "The fuse box activates, electrifying the water, killing the minotaur."
                       },
                       {
-                        "room_remove_objects": [
+                        "roomRemoveObjects": [
                           {
                             "room": "boss_room",
                             "object": "minotaur"
@@ -195,7 +188,7 @@
                     ],
                     "else": [
                       {
-                        "show_message": "${name} is not compatible with ${item}"
+                        "showMessage": "${name} is not compatible with ${item}"
                       }
                     ]
                   }
@@ -207,13 +200,12 @@
         {
           "id": "minotaur",
           "name": "Minotaur",
-          "room_description":
-            "A hoved beast lurks with a large scythe that no man should cross. It's standing in a pool of water in front of the North exit.",
+          "roomDescription": "A hoved beast lurks with a large scythe that no man should cross. It's standing in a pool of water in front of the North exit.",
           "objects": [],
           "commands": {
             "examine": [
               {
-                "show_message": "A big fucking Minotaur"
+                "showMessage": "A big fucking Minotaur"
               }
             ]
           }
@@ -221,14 +213,14 @@
         {
           "id": "northern_exit",
           "name": "Northern Exit",
-          "room_description": "An ornate door to the North. It's beautiful.",
+          "roomDescription": "An ornate door to the North. It's beautiful.",
           "objects": [],
           "commands": {
             "go": [
               {
                 "unless": [
                   {
-                    "room_has_objects": [
+                    "roomHasObjects": [
                       {
                         "room": "boss_room",
                         "object": "minotaur"
@@ -238,13 +230,12 @@
                 ],
                 "then": [
                   {
-                    "player_change_room": "treasure_room"
+                    "playerChangeRoom": "treasure_room"
                   }
                 ],
                 "else": [
                   {
-                    "show_message":
-                      "A ${rooms.boss_room.objects.minotaur.name} is blocking your path!"
+                    "showMessage": "A ${rooms.boss_room.objects.minotaur.name} is blocking your path!"
                   }
                 ]
               }
@@ -254,13 +245,12 @@
         {
           "id": "southern_exit",
           "name": "Southern Exit",
-          "room_description":
-            "An exit to the South, back to the starting room.",
+          "roomDescription": "An exit to the South, back to the starting room.",
           "objects": [],
           "commands": {
             "go": [
               {
-                "player_change_room": "starting_room"
+                "playerChangeRoom": "starting_room"
               }
             ]
           }
@@ -275,12 +265,12 @@
         {
           "id": "southern_exit",
           "name": "Southern Exit",
-          "room_description": "A Southern exit back to Da Boss Room.",
+          "roomDescription": "A Southern exit back to Da Boss Room.",
           "objects": [],
           "commands": {
             "go": [
               {
-                "player_change_room": "boss_room"
+                "playerChangeRoom": "boss_room"
               }
             ]
           }
@@ -289,14 +279,14 @@
           "id": "treasure",
           "name": "Treasure",
           "room_description": "A pile of treasure!",
-          "inventory_description": "A pile of treasure!",
+          "inventoryDescription": "A pile of treasure!",
           "objects": [],
           "commands": {
             "pickup": [
               {
-                "player_pickup_item": "treasure"
+                "playerPickupItem": "treasure"
               },
-              { "show_message": "That's some shiny loot" }
+              { "showMessage": "That's some shiny loot" }
             ]
           }
         }
