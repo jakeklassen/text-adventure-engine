@@ -1,7 +1,6 @@
-const playerHasItems = game => {
-  expression.player_has_items.every(itemName =>
-    game.player.inventory.find(item => item.name.toLowerCase() === itemName),
-  );
-};
+import { Player } from '../classes/player';
 
-export default playerHasItems;
+export const playerHasItems = (player: Player, itemIds: string[]) =>
+  itemIds.every(
+    itemId => player.inventory.find(item => item.id === itemId) != null,
+  );

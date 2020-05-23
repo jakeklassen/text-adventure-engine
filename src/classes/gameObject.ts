@@ -6,6 +6,23 @@ type Commands = {
   [command in CommandKeys]: object[];
 };
 
+export type Exit = {
+  type: 'exit';
+  commands: Pick<Commands, 'Go'>;
+};
+
+export type Item = {
+  type: 'item';
+};
+
+export type GameObjectType = Exit | Item;
+
+const exit: Exit = {
+  commands: {
+    Go: {},
+  },
+};
+
 export class GameObject {
   @Expose()
   public id = '';
@@ -26,10 +43,10 @@ export class GameObject {
   public commands: Partial<Commands> = {};
 }
 
-{
-  'use': [
-    branch.if([]).then([]),
-    branch.unless([]).then([]).else([]),
-    branch.if([]).then([]).elseif([]).then([]),
-  ]
-}
+// {
+//   'use': [
+//     branch.if([]).then([]),
+//     branch.unless([]).then([]).else([]),
+//     branch.if([]).then([]).elseif([]).then([]),
+//   ]
+// }

@@ -39,10 +39,6 @@ export class Game {
 
   @Exclude()
   public setCurrentRoom(room: Room) {
-    if (room == null) {
-      return;
-    }
-
     const existingRoom = this.getRoomById(room.id);
 
     if (existingRoom != null) {

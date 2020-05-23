@@ -1,4 +1,6 @@
-export function getRoomExit(room, direction) {
+import { Room } from '../classes/room';
+
+export function getRoomExit(room: Room, direction) {
   let exit = null;
 
   switch (direction) {
